@@ -1,6 +1,6 @@
 package net.ninjacat.asciitable;
 
-class Column
+public class Column
 {
   final MeasurableText text;
 

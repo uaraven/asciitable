@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static net.ninjacat.asciitable.StringUtils.align;
-import static net.ninjacat.asciitable.StringUtils.headerForCenter;
-import static net.ninjacat.asciitable.StringUtils.tailForCenter;
 
 public record Row(List<? extends MeasurableText> data) {
 
