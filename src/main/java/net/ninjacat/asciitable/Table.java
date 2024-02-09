@@ -3,8 +3,6 @@ package net.ninjacat.asciitable;
 import java.util.Arrays;
 import java.util.List;
 
-import static net.ninjacat.asciitable.StringUtils.center;
-
 public class Table
 {
   private final Header header;
@@ -13,25 +11,25 @@ public class Table
 
   private List<Row> body;
 
-  public Table(final List<? extends MeasurableText> header, final TableBlocks blocks) {
-    this.header = Header.of(header);
+  public Table(final List<Column> header, final TableBlocks blocks) {
+    this.header = new Header(header);
     this.blocks = blocks;
   }
 
-  public Table(final List<? extends MeasurableText> header) {
-    this(header, TableBlocks.defaults());
+  public static Table ofText(final MeasurableText... header) {
+    return new Table(Arrays.stream(header).map(e -> new Column(e)).toList(), TableBlocks.defaults());
   }
 
-  public Table(final MeasurableText... header) {
-    this(Arrays.stream(header).toList());
-  }
-
-  public Table(final String... header) {
-    this(Arrays.stream(header).map(MeasurableString::new).toList());
+  public static Table ofStrings(final String... header) {
+    return ofHeaders(Arrays.stream(header).toList());
   }
 
   public static Table ofHeaders(List<String> headers) {
-    return new Table(headers.stream().map(MeasurableString::new).toList());
+    return new Table(headers.stream().map(e -> new Column(new MeasurableString(e))).toList(), TableBlocks.defaults());
+  }
+
+  public static Table ofHeaders(List<String> headers, Alignment alignment) {
+    return new Table(headers.stream().map(e -> Column.of(e, alignment)).toList(), TableBlocks.defaults());
   }
 
   public void setBody(List<? extends List<? extends MeasurableText>> cells) {
@@ -53,7 +51,7 @@ public class Table
     layout(body, -1);
     final StringBuilder sb = new StringBuilder();
     sb.append(header.render(blocks, !body.isEmpty()));
-    for (final var row: body) {
+    for (final var row : body) {
       sb.append(row.render(blocks, header));
     }
     sb.append(header.bottomRow(blocks, false));

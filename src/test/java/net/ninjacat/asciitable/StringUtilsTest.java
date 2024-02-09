@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import static net.ninjacat.asciitable.StringUtils.center;
 import static net.ninjacat.asciitable.StringUtils.headerForCenter;
 import static net.ninjacat.asciitable.StringUtils.multi;
+import static net.ninjacat.asciitable.StringUtils.padLeft;
 import static net.ninjacat.asciitable.StringUtils.tailForCenter;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -45,5 +46,17 @@ class StringUtilsTest
   @Test
   void shouldCenterTextNoClipping() {
     assertThat(center("texting", 5, false)).isEqualTo("texting");
+  }
+
+  @Test
+  void shouldPadLeft() {
+    assertThat(padLeft("text", 8)).isEqualTo("    text");
+    assertThat(padLeft("text", 4)).isEqualTo("text");
+  }
+
+  @Test
+  void shouldPadLeftClipping() {
+    assertThat(padLeft("textual", 6, true)).isEqualTo("textu…");
+    assertThat(padLeft("textual", 6, false)).isEqualTo("textual");
   }
 }
